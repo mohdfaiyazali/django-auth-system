@@ -34,3 +34,24 @@ class AuthTestCase(TestCase):
         self.client.login(username='testuser', password='testpass123')
         response = self.client.get(reverse('profile'))
         self.assertEqual(response.status_code, 200)
+
+    def test_login_invalid_credentials(self):
+        response = self.client.post(reverse('login'), {
+            'username': 'testuser',
+            'password': 'wrongpass'
+        })
+        self.assertEqual(response.status_code, 200)  # stays on login page
+
+    def test_register_password_mismatch(self):
+        response = self.client.post(reverse('register'), {
+            'username': 'user2',
+            'email': 'test@test.com',
+            'password1': 'pass12345',
+            'password2': 'differentpass'
+        })
+        self.assertEqual(response.status_code, 200)
+
+    def test_logout(self):
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 302)
