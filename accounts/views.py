@@ -4,6 +4,10 @@ from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
 
 
+def home_view(request):
+    return render(request, 'accounts/home.html')
+
+
 @login_required
 def profile_view(request):
     return render(request, 'accounts/profile.html')
